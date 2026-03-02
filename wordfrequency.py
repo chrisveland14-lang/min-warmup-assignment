@@ -117,8 +117,10 @@ def largest_pair(par_1, par_2):
 
 
 def find_most_frequent(frequency_table):
+    if not frequency_table:
+        return None
+    
     pairs = list(frequency_table.items())
-
     largest = pairs[0]
 
     for pair in pairs[1:]:
