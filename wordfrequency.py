@@ -1,3 +1,4 @@
+
 from pathlib import Path
 import sys
 
@@ -17,11 +18,27 @@ def read_file(file_name):
     tilbake en liste av tekststrenger som representerer linjene i filen.
     """
     # Tips: kanksje "open"-funksjonen kunne være nyttig her: https://docs.python.org/3/library/functions.html#open
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+    with open(file_name, 'r') as f:
+        lines = f.read().splitlines()
+    return lines  # TODO: Du må erstatte denne linjen
 
 
 def lines_to_words(lines):
-    """
+    result = []
+
+    for line in lines:
+        words = line.split()
+
+        for word in words: # Fjerner tegn i start og slutt av ordet
+            word = word.strip(".,:;?!")
+            word = word.lower()
+
+            if word:
+                result.append(word)
+
+    return result  # TODO: Du må erstatte denne linjen
+
+    """  
     Denne funksjonen får en liste med strenger som input (dvs. linjene av tekstfilen som har nettopp blitt lest inn)
     og deler linjene opp i enkelte ord. Enhver linje blir delt opp der det er blanktegn (= whitespaces).
     Desto videre er vi bare interessert i faktiske ord, dvs. alle punktum (.), kolon (:), semikolon (;),
@@ -35,35 +52,59 @@ def lines_to_words(lines):
     # Tips: se på "split()"-funksjonen https://docs.python.org/3/library/stdtypes.html#str.split
     # i tillegg kan "strip()": https://docs.python.org/3/library/stdtypes.html#str.strip
     # og "lower()": https://docs.python.org/3/library/stdtypes.html#str.lower være nyttig
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+
 
 
 def compute_frequency(words):
-    """
-    Denne funksjonen tar inn en liste med ord og så lager den en frekvenstabell ut av den. En frekvenstabell
-    teller hvor ofte hvert ord dykket opp i den opprinnelige input listen. Frekvenstabllen
-    blir realisert gjennom Python dictionaires: https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
+    frequency = {}
 
-    F. eks. Inn ["hun", "hen", "han", "hen"], Ut: {"hen": 2, "hun": 1, "han": 1}
-    """
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+    for word in words:
+
+        if word in frequency:
+            frequency[word] += 1
+        else:
+            frequency[word] = 1
+    
+    return frequency
+
+    
+   # Denne funksjonen tar inn en liste med ord og så lager den en frekvenstabell ut av den. En frekvenstabell
+   # teller hvor ofte hvert ord dykket opp i den opprinnelige input listen. Frekvenstabllen
+   # blir realisert gjennom Python dictionaires: https://docs.python.org/3/library/stdtypes.html#mapping-types-dictf
+    
+    # F. eks. Inn ["hun", "hen", "han", "hen"], Ut: {"hen": 2, "hun": 1, "han": 1}
+    
+
+
 
 
 FILL_WORDS = ['og', 'dei', 'i', 'eg', 'som', 'det', 'han', 'til', 'skal', 'på', 'for', 'då', 'ikkje', 'var', 'vera']
 
 
 def remove_filler_words(frequency_table):
-    """
-    Ofte inneholder tekst koblingsord som "og", "eller", "jeg", "da". Disse er ikke så spennende når man vil
-    analysere innholdet til en tekst. Derfor vil vi gjerne fjerne dem fra vår frekvenstabell.
-    Vi har gitt deg en liste med slike koblingsord i variablen FILL_WORDS ovenfor.
-    Målet med denne funksjonen er at den skal få en frekvenstabll som input og så fjerne alle fyll-ord
-    som finnes i FILL_WORDS.
-    """
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+     for word in FILL_WORDS:
+
+         if word in frequency_table:
+             del frequency_table[word]
+
+     return frequency_table
+
+
+
+    # Ofte inneholder tekst koblingsord som "og", "eller", "jeg", "da". Disse er ikke så spennende når man vil
+    # analysere innholdet til en tekst. Derfor vil vi gjerne fjerne dem fra vår frekvenstabell.
+    # Vi har gitt deg en liste med slike koblingsord i variablen FILL_WORDS ovenfor.
+    # Målet med denne funksjonen er at den skal få en frekvenstabll som input og så fjerne alle fyll-ord som finnes i FILL_WORDS.
+
 
 
 def largest_pair(par_1, par_2):
+
+    if par_1[1] >= par_2[1]:
+           return par_1
+    else:
+           return par_2 # TODO: Du må erstatte denne linjen
+
     """
     Denne funksjonen får som input to tupler/par (https://docs.python.org/3/library/stdtypes.html#tuple) der den
     første komponenten er en string (et ord) og den andre komponenten er en integer (heltall).
@@ -72,23 +113,35 @@ def largest_pair(par_1, par_2):
     """
     # OBS: Tenk også på situasjonen når to tall er lik! Vurder hvordan du vil handtere denne situasjonen
     # kanskje du vil skrive noen flere test metoder ?!
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+
 
 
 def find_most_frequent(frequency_table):
-    """
-    Nå er det på tide å sette sammen alle bitene du har laget.
-    Den funksjonen får frekvenstabllen som innputt og finner det ordet som dykket opp flest.
-    """
-    # Tips: se på "dict.items()" funksjonen (https://docs.python.org/3/library/stdtypes.html#dict.items)
-    # og kanskje du kan gjenbruke den "largest_pair" metoden som du nettopp har laget
-    return NotImplemented  # TODO: Du må erstatte denne linjen
+    pairs = list(frequency_table.items())
+
+    largest = pairs[0]
+
+    for pair in pairs[1:]:
+        largest = largest_pair(largest, pair)
+
+    return largest
+
+
+    # Nå er det på tide å sette sammen alle bitene du har laget.
+    # Den funksjonen får frekvenstabllen som innputt og finner det ordet som dykket opp flest.
+    
+    # Tips: se på "dict.items()" funksjonen (https://docs.python.org/3/library/stdtypes.html#dict.items) 
+    # og kanskje du kan gjenbruke den "largest_pair" metoden som du nettopp har laget                    
+
+
+    
+
 
 
 ############################################################
-#                                                          #
+#
 # Her slutter dendelen av filen som er relevant for deg ;-)#
-#                                                          #
+#                                                                                                                                                                      #
 ############################################################
 
 
