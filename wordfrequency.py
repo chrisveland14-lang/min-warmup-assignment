@@ -126,7 +126,7 @@ def find_most_frequent(frequency_table):
     for pair in pairs[1:]:
         largest = largest_pair(largest, pair)
 
-    return largest
+    return largest[0]
 
 
     # Nå er det på tide å sette sammen alle bitene du har laget.
